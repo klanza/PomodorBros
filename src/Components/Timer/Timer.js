@@ -8,9 +8,9 @@ class Timer extends Component {
   componentDidMount() {
     this.timer = setInterval(() => {
       this.setState({
-        number: this.state.number--
+        number: --this.state.number
       });
-      console.log(number);
+      console.log(this.state.number);
     }, 1000);
   }
 
