@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
 
+const styles = {
+  main: {
+    width: '100%',
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+};
+
 class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = { number: 5 };
     this.timer = this.timer.bind(this);
+    this.timerStart = this.timerStart.bind(this);
+    this.timerStop = this.timerStop.bind(this);
+    this.timerReset = this.timerReset.bind(this);
   }
 
   timerStart() {
-    this.interval = setInterval(() => this.timer, 1000);
+    this.interval = setInterval(() => this.timer(), 1000);
   }
 
   timerStop() {
@@ -46,14 +59,30 @@ class Timer extends Component {
   render() {
     const { number } = this.state;
 
-    let start 
+    let start = (
+      <div>
+        <button onClick={this.timerStart}>START</button>
+      </div>
+    );
+
+    let stop = (
+      <div>
+        <button onClick={this.timerStop}>STOP</button>
+      </div>
+    );
+
+    let reset = (
+      <div>
+        <button onClick={this.timerReset}>RESET</button>
+      </div>
+    );
 
     return (
-      <div>
+      <div className={styles['main']}>
         {number}
-        <button onClick={}>START</button>
-        <button>STOP</button>
-        <button>RESET</button>
+        {start}
+        {stop}
+        {reset}
       </div>
     );
   }
