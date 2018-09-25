@@ -18,7 +18,7 @@ module.exports = {
     inline: true
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
     modules: ['src', 'node_modules']
   },
   module: {
