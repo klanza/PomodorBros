@@ -4,7 +4,11 @@ import styles from './timer.css';
 class Timer extends Component {
   constructor(props) {
     super(props);
-    this.state = { number: 5 };
+    this.state = {
+      number: 1500,
+      minutes: '',
+      seconds: ''
+    };
     this.timer = this.timer.bind(this);
     this.timerStart = this.timerStart.bind(this);
     this.timerStop = this.timerStop.bind(this);
@@ -22,7 +26,7 @@ class Timer extends Component {
   timerReset() {
     clearInterval(this.interval);
     this.setState({
-      number: 5
+      number: 1500
     });
   }
 
@@ -33,7 +37,7 @@ class Timer extends Component {
         console.log('clearing interval');
         clearInterval(this.interval);
         this.setState({
-          number: 5
+          number: 1500
         });
         break;
       }
@@ -42,6 +46,7 @@ class Timer extends Component {
         this.setState({
           number: number - 1
         });
+        console.log(this.state);
         break;
       }
     }
@@ -49,6 +54,9 @@ class Timer extends Component {
 
   render() {
     const { number } = this.state;
+    const minutes = Math.floor(this.state.number / 60);
+    const seconds = this.state.number % 60;
+    console.log(minutes, seconds);
 
     let start = (
       <div>
@@ -70,10 +78,15 @@ class Timer extends Component {
 
     return (
       <div className={styles['main']}>
-        {number}
-        {start}
-        {stop}
-        {reset}
+        <div className={styles['nav']} />
+        <div className={styles['timer']}>
+          <div>
+            {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+          </div>
+          {start}
+          {stop}
+          {reset}
+        </div>
       </div>
     );
   }
