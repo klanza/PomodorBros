@@ -5,9 +5,7 @@ class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      number: 1500,
-      minutes: '',
-      seconds: ''
+      number: 1500
     };
     this.timer = this.timer.bind(this);
     this.timerStart = this.timerStart.bind(this);
@@ -54,8 +52,8 @@ class Timer extends Component {
 
   render() {
     const { number } = this.state;
-    const minutes = Math.floor(this.state.number / 60);
-    const seconds = this.state.number % 60;
+    const minutes = Math.floor(number / 60);
+    const seconds = number % 60;
     console.log(minutes, seconds);
 
     let start = (
@@ -77,15 +75,17 @@ class Timer extends Component {
     );
 
     return (
-      <div className={styles['main']}>
-        <div className={styles['nav']} />
-        <div className={styles['timer']}>
-          <div>
+      <div className={styles.main}>
+        <div className={styles.nav} />
+        <div className={styles.timer}>
+          <div className={styles.display}>
             {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
           </div>
-          {start}
-          {stop}
-          {reset}
+          <div className={styles.controls}>
+            {start}
+            {stop}
+            {reset}
+          </div>
         </div>
       </div>
     );
