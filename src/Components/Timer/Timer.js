@@ -5,7 +5,9 @@ class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      number: 1500
+      number: 1500,
+      store: [],
+      count: 0
     };
     this.timer = this.timer.bind(this);
     this.timerStart = this.timerStart.bind(this);
@@ -18,13 +20,20 @@ class Timer extends Component {
   }
 
   timerStop() {
+    const { number, store, count } = this.state;
     clearInterval(this.interval);
+    this.setState({
+      store: [...store, { time: number, count: count + 1 }],
+      count: count + 1
+    });
   }
 
   timerReset() {
     clearInterval(this.interval);
     this.setState({
-      number: 1500
+      number: 1500,
+      store: [],
+      count: 0
     });
   }
 
@@ -51,7 +60,7 @@ class Timer extends Component {
   }
 
   render() {
-    const { number } = this.state;
+    const { number, store } = this.state;
     const minutes = Math.floor(number / 60);
     const seconds = number % 60;
     console.log(minutes, seconds);
@@ -77,6 +86,19 @@ class Timer extends Component {
     return (
       <div className={styles.main}>
         <div className={styles.nav} />
+        <div className={styles.record}>
+          <ul>
+            {store.map(function(item) {
+              const minutes = Math.floor(item.time / 60);
+              const seconds = item.time % 60;
+              return (
+                <li className={styles.items}>{`paused ${
+                  item.count
+                } times time: ${minutes}:${seconds}`}</li>
+              );
+            })}
+          </ul>
+        </div>
         <div className={styles.timer}>
           <div className={styles.display}>
             {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
