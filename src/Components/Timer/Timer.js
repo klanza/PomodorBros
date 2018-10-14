@@ -6,22 +6,29 @@ class Timer extends Component {
     super(props);
     this.state = {
       number: 1500,
+      pause: 0,
       store: [],
       count: 0
     };
-    this.timer = this.timer.bind(this);
+    this.workTimer = this.workTimer.bind(this);
+    this.pauseTimer = this.pauseTimer.bind(this);
     this.timerStart = this.timerStart.bind(this);
     this.timerStop = this.timerStop.bind(this);
     this.timerReset = this.timerReset.bind(this);
   }
 
   timerStart() {
-    this.interval = setInterval(() => this.timer(), 1000);
+    this.interval = setInterval(() => this.workTimer(), 1000);
+    if (this.state.pause > 0) {
+      clearInterval(this.pauseInterval);
+    }
   }
 
   timerStop() {
     const { number, store, count } = this.state;
     clearInterval(this.interval);
+    clearInterval(this.pauseInterval);
+    this.pauseInterval = setInterval(() => this.pauseTimer(), 1000);
     this.setState({
       store: [...store, { time: number, count: count + 1 }],
       count: count + 1
@@ -30,14 +37,16 @@ class Timer extends Component {
 
   timerReset() {
     clearInterval(this.interval);
+    clearInterval(this.pauseInterval);
     this.setState({
       number: 1500,
       store: [],
-      count: 0
+      count: 0,
+      pause: 0
     });
   }
 
-  timer() {
+  workTimer() {
     const { number } = this.state;
     switch (true) {
       case number === 0: {
@@ -57,6 +66,17 @@ class Timer extends Component {
         break;
       }
     }
+  }
+
+  pauseTimer() {
+    const { pause } = this.state;
+    // Re-render every interval to display time it has been paused for
+    // ** Should this create a "new" pause each time or add
+    //    to total time paused? **
+    this.setState({
+      pause: pause + 1
+    });
+    // When timerStop() is called, begin separate interval to track pause
   }
 
   render() {
