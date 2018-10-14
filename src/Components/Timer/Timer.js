@@ -111,14 +111,15 @@ class Timer extends Component {
         <div className={styles.record}>
           <ul>
             {store.map(function(item) {
-              const minutes = Math.floor(item.time / 60);
-              const seconds = item.time % 60;
+              const duration = 1500 - item.time;
+              const minutes = Math.floor(duration / 60);
+              const seconds = duration % 60;
 
               const pMinutes = Math.floor(item.pause / 60);
               const pSeconds = item.pause % 60;
               return (
                 <li className={styles.items}>
-                  {`paused ${item.count} times time: ${minutes}:${seconds}
+                  {`Paused ${item.count} times time: ${minutes}:${seconds}
                 Time Paused : ${pMinutes}:${
                     pSeconds < 10 ? `0${pSeconds}` : pSeconds
                   }
