@@ -108,7 +108,7 @@ class Timer extends Component {
         <div className={styles.nav} />
         <div className={styles.record}>
           {store.map(item => (
-            <Session store={item} />
+            <Session item={item} />
           ))}
         </div>
         <div className={styles.timer}>
