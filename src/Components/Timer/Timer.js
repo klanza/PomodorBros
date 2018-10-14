@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './timer.css';
+import Session from '../Sessions/Session';
 
 class Timer extends Component {
   constructor(props) {
@@ -40,10 +41,7 @@ class Timer extends Component {
     clearInterval(this.interval);
     clearInterval(this.pauseInterval);
     this.setState({
-      store: [
-        ...store,
-        { key: sessionCount, time: number, count: count, pause: pause }
-      ],
+      store: [...store, { key: sessionCount, time: number, count: count, pause: pause }],
       number: 1500,
       count: 0,
       pause: 0,
@@ -109,25 +107,9 @@ class Timer extends Component {
       <div className={styles.main}>
         <div className={styles.nav} />
         <div className={styles.record}>
-          <ul>
-            {store.map(function(item) {
-              const duration = 1500 - item.time;
-              const minutes = Math.floor(duration / 60);
-              const seconds = duration % 60;
-
-              const pMinutes = Math.floor(item.pause / 60);
-              const pSeconds = item.pause % 60;
-              return (
-                <li className={styles.items}>
-                  {`Paused ${item.count} times time: ${minutes}:${seconds}
-                Time Paused : ${pMinutes}:${
-                    pSeconds < 10 ? `0${pSeconds}` : pSeconds
-                  }
-                `}
-                </li>
-              );
-            })}
-          </ul>
+          {store.map(item => (
+            <Session store={item} />
+          ))}
         </div>
         <div className={styles.timer}>
           <div className={styles.display}>
