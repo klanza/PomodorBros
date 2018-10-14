@@ -6,6 +6,7 @@ class Timer extends Component {
     super(props);
     this.state = {
       number: 1500,
+      sessionCount: 1,
       pause: 0,
       store: [],
       count: 0
@@ -18,7 +19,7 @@ class Timer extends Component {
   }
 
   timerStart() {
-    this.interval = setInterval(() => this.workTimer(), 1000);
+    this.interval = setInterval(() => this.workTimer(), 100);
     if (this.state.pause > 0) {
       clearInterval(this.pauseInterval);
     }
@@ -30,19 +31,23 @@ class Timer extends Component {
     clearInterval(this.pauseInterval);
     this.pauseInterval = setInterval(() => this.pauseTimer(), 1000);
     this.setState({
-      store: [...store, { time: number, count: count + 1 }],
       count: count + 1
     });
   }
 
   timerReset() {
+    const { number, store, count, sessionCount, pause } = this.state;
     clearInterval(this.interval);
     clearInterval(this.pauseInterval);
     this.setState({
+      store: [
+        ...store,
+        { key: sessionCount, time: number, count: count, pause: pause }
+      ],
       number: 1500,
-      store: [],
       count: 0,
-      pause: 0
+      pause: 0,
+      sessionCount: sessionCount + 1
     });
   }
 
@@ -50,11 +55,7 @@ class Timer extends Component {
     const { number } = this.state;
     switch (true) {
       case number === 0: {
-        console.log('clearing interval');
-        clearInterval(this.interval);
-        this.setState({
-          number: 1500
-        });
+        this.timerReset();
         break;
       }
       default: {
@@ -76,6 +77,7 @@ class Timer extends Component {
     this.setState({
       pause: pause + 1
     });
+    console.log(this.state);
     // When timerStop() is called, begin separate interval to track pause
   }
 
@@ -111,10 +113,17 @@ class Timer extends Component {
             {store.map(function(item) {
               const minutes = Math.floor(item.time / 60);
               const seconds = item.time % 60;
+
+              const pMinutes = Math.floor(item.pause / 60);
+              const pSeconds = item.pause % 60;
               return (
-                <li className={styles.items}>{`paused ${
-                  item.count
-                } times time: ${minutes}:${seconds}`}</li>
+                <li className={styles.items}>
+                  {`paused ${item.count} times time: ${minutes}:${seconds}
+                Time Paused : ${pMinutes}:${
+                    pSeconds < 10 ? `0${pSeconds}` : pSeconds
+                  }
+                `}
+                </li>
               );
             })}
           </ul>
